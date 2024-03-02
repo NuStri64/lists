@@ -2,7 +2,7 @@ name: 更新名單
 
 on:
   schedule:
-    - cron: '*/1 * * * *'  # 每1分鐘執行一次
+    - cron: '*/5 * * * *'  # 每5分鐘執行一次
 
 jobs:
   build:
