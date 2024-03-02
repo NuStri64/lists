@@ -35,7 +35,7 @@ jobs:
 
     - name: 編譯阻止名單
       run: |
-        node_modules/.bin/hostlist-compiler --verbose -i './mirrorLists/*' -o theBlacklist.txt ./*
+        node_modules/.bin/hostlist-compiler --verbose -i './mirrorLists/*' -o theBlacklist.txt 
 
     - name: 新增並提交變更
       run: |
