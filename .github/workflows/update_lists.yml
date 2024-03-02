@@ -1,4 +1,4 @@
-name: 更新阻止名單
+name: 更新名單
 
 on:
   schedule:
