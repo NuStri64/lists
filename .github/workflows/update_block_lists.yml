@@ -1,0 +1,41 @@
+name: 更新阻止名單
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # 每5分鐘執行一次
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 檢出程式碼
+      uses: actions/checkout@v2
+
+    - name: 設定 Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: 安裝 HostlistCompiler
+      run: |
+        yarn add @adguard/hostlist-compiler
+
+    - name: 創建 mirrorLists 目錄
+      run: mkdir -p mirrorLists
+
+    - name: 下載阻止名單
+      run: |
+        curl -L -o mirrorLists/hotlist.json https://github.com/phishfort/phishfort-lists/blob/master/blacklists/hotlist.json
+        curl -L -o mirrorLists/phishings.txt https://github.com/samiux/update-croissants/raw/master/rules/phishings.txt
+        curl -L -o mirrorLists/global-anti-scam-org-scam-urls-UBO.txt https://github.com/elliotwutingfeng/GlobalAntiScamOrg-blocklist/raw/main/global-anti-scam-org-scam-urls-UBO.txt
+        curl -L -o mirrorLists/ScamSiteGetFromTaiwan165.txt https://github.com/houboyjacky/Ad-Malicious-Scams-Boring-Farm-Filter/raw/master/ScamSiteGetFromTaiwan165.txt
+        curl -L -o mirrorLists/TWNIC-RPZ.txt https://github.com/FutaGuard/LowTechFilter/raw/master/TWNIC-RPZ.txt
+        curl -L -o mirrorLists/TW165.txt https://github.com/FutaGuard/LowTechFilter/raw/master/TW165.txt
+
+    - name: 編譯阻止名單
+      run: |
+        node_modules/.bin/hostlist-compiler \
+          --output theBlacklist.txt \
+          ./*
+
